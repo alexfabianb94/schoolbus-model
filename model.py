@@ -2,9 +2,20 @@
 
 import gurobipy as gp
 from gurobipy import GRB
-import numpy as np
 from helpers.data import Data
+import os
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 
+def create_graph(nodes, arcs):
+    graph = nx.Graph()
+    nodes_graph = [(n1.id, {'pos': (n1.x, n1.y)}) for n1 in nodes]
+    graph.add_nodes_from(nodes_graph)
+    graph.add_edges_from(arcs)
+    pos = nx.get_node_attributes(graph, 'pos')
+    nx.draw(graph, pos)
+    plt.savefig('graphs/sol.pdf')
 
 def solver(instance):
     m = gp.Model("school")
@@ -14,18 +25,29 @@ def solver(instance):
                                         for n2 in instance.nodes if n1.id != n2.id}
 
     depot = 0
-    fdepot = 24
+    fdepot = instance.N-1
 
     x = m.addVars(edges.keys() , vtype=GRB.BINARY, name='x')
     t = m.addVars(range(instance.N), vtype=GRB.CONTINUOUS, name='t')
     r = m.addVars(range(instance.N), vtype=GRB.CONTINUOUS, name='r')
 
 
-    m.setObjective(gp.quicksum(t[e] for e in range(instance.n + 1, instance.n + instance.K + 1)), GRB.MINIMIZE)
+    #m.setObjective(gp.quicksum(t[e] for e in range(instance.n + 1, instance.n + instance.K + 1)), GRB.MINIMIZE)
     #m.setObjective(t[0] + gp.quicksum(0.01*t[e] for e in range(instance.n + 1, instance.n + instance.K + 1)),\
     #                                                                                               GRB.MAXIMIZE)
-
+    m.setObjective(gp.quicksum(t[i] for i in range(1, instance.n + instance.K + 1)), GRB.MAXIMIZE)
     #m.setObjective(t[0] ,GRB.MAXIMIZE)
+    #m.setObjective(gp.quicksum((edges[i,j] + instance.nodes[j].s)*x[i,j] \
+    #                           for i in range(1, instance.n + instance.K + 1)\
+    #                           for j in range(1, instance.n + instance.K + 1)\
+    #                           if (i,j) in edges.keys()), GRB.MINIMIZE)
+
+    #m.setObjective(gp.quicksum((edges[i,j] + instance.nodes[j].s)*x[i,j] \
+    #                            for i in range(1, instance.n + instance.K + 1)\
+    #                            for j in range(1, instance.n + instance.K + 1)\
+    #                            if (i,j) in edges.keys()) - t[depot], GRB.MINIMIZE)
+    #m.setObjective(gp.quicksum(t[instance.nodes[i].p] - t[i] \
+    #                            for i in range(1, instance.n + 1)), GRB.MINIMIZE)
 
     m.addConstr(gp.quicksum(x[depot, j] for j in range(1, instance.n + 1)) == 1, name='llegada')
     m.addConstrs((gp.quicksum(x[i,j] for i in range(0, instance.n + instance.K + 1) \
@@ -71,19 +93,27 @@ def solver(instance):
                                                                                                 name='MTZ9')
     m.addConstrs((t[j] >= t[depot] - instance.M*(1 - x[depot,j]) for j in range(1, instance.n + 1)), name='MTZ10')
     m.addConstrs((r[j] >= r[depot] + instance.nodes[j].d*x[depot,j] for j in range(1, instance.n + 1)), name='MTZ11')
-
+    
     m.setParam(GRB.Param.TimeLimit, 100.0)
     
+    if os.path.exists('solutions/solution.sol'):
+        m.update()
+        m.read('solutions/solution.sol')
+    
     m.optimize()
+    
     m.write('models/model.lp')
+    m.write('solutions/solution.sol')
 
     values = m.getAttr("x", x)
     arcs = [(i,j) for i,j in values.keys() if values[i,j] > 0.9]
-    print(arcs)
+    return arcs
     
 if __name__ == '__main__':
     with open('data/data.dat') as file:
         input_data = file.read()
     instance = Data(input_data)
-    solver(instance)
+    sol = solver(instance)
+    nodes = instance.nodes[:]
+    create_graph(nodes, sol) 
 
