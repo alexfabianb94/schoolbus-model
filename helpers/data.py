@@ -16,6 +16,7 @@ class Node:
         self.y = None
         self.d = None
         self.s = None
+        self.p = None
         self.TE = None
         
 exp_data = {
