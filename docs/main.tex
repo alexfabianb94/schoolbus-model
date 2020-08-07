@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[showframe,lmargin=3cm,rmargin=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{tabularx}
+\usepackage{amsmath}
+
+\renewcommand{\baselinestretch}{1.08}
+
+\title{Modelo de buses escolares}
+\date{\today}
+
+\allowdisplaybreaks
+\begin{document}
+\tableofcontents
+\section{Conjuntos y Parámetros}
+\begin{tabularx}{428.6pt}{l l X}
+$E$ &=& Conjunto de escuelas\\
+$N_{e}$ &=& Conjunto de usuarios (alumnos, estudiantes) que asisten a la escuela $e$. $\forall e \in E$\\
+$U$ &=& Conjunto de usuarios ($U = \bigcup_{e \in E} N_{e}$)\\
+$N$ &=& Conjunto de nodos ($N = U \cup E \cup \{0, n + k + 1\}$). Si $n$ es el número de estudiantes o usuarios y $k$ el número de escuelas, entonces $U = \{1,2,...,n\}$, $E = \{n+1, n+2, ..., n+k\}$ y $N = \{0,1,...,n,n+1,..,n+k,n+k+1 \}$\\
+$Q$ &=& Es la capacidad del furgón escolar\\
+$0$ &=& Es el nodo origen ficticio\\
+$n+k+1$ &=& Es el nodo destino ficticio\\
+$S_{j}$ &=& Tiempo de servicio en el nodo $j$\\
+$TE_{e}$ &=& Tiempo de entrada de los alumnos a la escuela $e$\\
+$d_{j}$ &=& Demanda de usuarios en el nodo $j$
+\end{tabularx}
+
+\section{Variables de decisión}
+\begin{tabularx}{428.6pt}{l l X}
+$x_{ij}$ &=& {\begin{cases}1&{\mbox{Si el furgón viaja del nodo $i$ al nodo $j$}}\\0&{\mbox{Si no}}\end{cases}} \\
+$t_{j}$ &=& \mbox{Tiempo en que el furgón escolar llega al nodo $j$} \\
+$r_{j}$ &=& \mbox{Número de usuarios que están en el furgón escolar cuando éste abandona el nodo $j$}
+\end{tabularx}
+
+\section{Modelo}
+\begin{equation}
+    \mbox{Min }Z=\sum_{j \in E} t_{j}
+\end{equation}
+Sujeto a: \begin{align}
+& \sum_{j \in U} x_{0j} = 1 \\
+& \sum_{i=0: i\neq j}^{n+k}x_{ij} = 1  & \forall j = 1,...,n \\
+& \sum_{i=1: i\neq j}^{n+k}x_{ij} = 1  & \forall j = n+1,...,n+k \\
+& \sum_{i=n+1}^{n+k}x_{i,n+k+1} = 1 \\
+& \sum_{j=1: i\neq j}^{n+k}x_{ij} = 1  & \forall i = 1,...,n \\
+& \sum_{j=1: i\neq j}^{n+k+1}x_{ij} = 1  & \forall i = n+1,...,n+k \\
+& t_{j} \geq t_{i} + (T_{ij} + S_{j})x_{ij} + M(x_{ij} - 1) & \forall i=1,..,n+k; j=1,..,n+k:i\neq j \\
+& r_{j} \geq r_{i} + d_{j}x_{ij} + Q(x_{ij} - 1) & \forall i=1,..,n+k; j=1,..,n:i\neq j \\
+& r_{j} \geq r_{i} - d_{j}x_{ij} + Q(x_{ij} - 1) & \forall i=1,..,n+k; j=n+1,..,n+k:i\neq j \\
+& TE_{e} \leq t_{e}  & \forall e \in E \\
+& r_{e} \leq Q  & \forall e \in E \\
+& r_{0} = 0 \\
+& t_{i} \leq t_{e}  & \forall e \in E, i \in N_{e} \\
+& x_{0h}, x_{ij}, x_{e,n+k+1} & \forall i,j \in \{1,...,n+k\}: i\neq j; h = 1,...,n; e \in E \\
+& t_{i}, r_{i} \geq 0 & \forall i = 0, ..., n+k
+\end{align}
+\end{document}
