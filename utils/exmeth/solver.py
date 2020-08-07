@@ -1,13 +1,10 @@
-#/usr/bin/env python
-
 import gurobipy as gp
 from gurobipy import GRB
-from utils.data import Data
 from utils.helpers import gen_path
 import os
 import numpy as np
 
-def solver(instance, solution_file='solutions/solution.sol', fo='Z1', model_file='models/model.lp', time_limit=100):
+def solver(instance, solution_file='solutions/solution.sol', fo='Z1', model_file='models/model.lp', time_limit=100, initial_sol = None):
     m = gp.Model("school")
         
     dist = lambda n1, n2: round(np.sqrt((n1.x - n2.x)**2 + (n1.y - n2.y)**2))
@@ -105,8 +102,12 @@ def solver(instance, solution_file='solutions/solution.sol', fo='Z1', model_file
     
     m.setParam(GRB.Param.TimeLimit, time_limit)
     
-    if os.path.exists(solution_file):
-        m.update()
+    m.update()
+    
+    if initial_sol:
+        for arc in edges:
+            x[arc[0], arc[1]].start = 1 if (arc[0], arc[1]) in initial_sol else 0
+    elif os.path.exists(solution_file):
         m.read(solution_file)
     
     m.optimize()
@@ -115,7 +116,9 @@ def solver(instance, solution_file='solutions/solution.sol', fo='Z1', model_file
     m.write(solution_file)
 
     values = m.getAttr("x", x)
+    times = m.getAttr("x", t)
     arcs = [(i,j) for i,j in values.keys() if values[i,j] > 0.9]
+    #print(times)
     path = gen_path(arcs)
     nsep = len(str(path)) + 10
     print("\n{}\nsolution: {}\n{}\n".format('-'*nsep, path, '-'*nsep))
