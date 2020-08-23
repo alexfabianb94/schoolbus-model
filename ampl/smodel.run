@@ -1,0 +1,78 @@
+reset;
+option solver gurobi; 
+option gurobi_options 'outlev 1 timelim 100';
+
+# option solver cplex;
+# option cplex_options 'mipdisplay=5';
+
+model smodel.mod;
+data data/data.dat;
+data data/color.dat;
+expand > "model/model.lp";
+
+solve;
+
+param shape_nodos {nodos} symbolic default "ellipse";
+param color_nodos {nodos} symbolic default "#777777";
+let {e in E} color_nodos[e] := color[e];
+let {i in U} color_nodos[i] := color[P[i]];
+let {e in E} shape_nodos[e] := "parallelogram";
+
+param archivo_grafico symbolic default "graph/grafo.gml";
+
+printf "graph\n[\n\thierarchic 1\n\tdirected 1\n" > (archivo_grafico);
+
+for {nodo in nodos}
+{
+
+	
+	printf "	node\n\t[\
+		id	%d\
+		graphics\
+		[\
+			x	%f\
+			y	%f\
+			w	%f\
+			h	%f\
+			type	\x22%s\x22\
+			fill	\x22%s\x22\
+		]\
+		LabelGraphics\
+		[\
+			text	\x22%d\x22\
+			fontSize	%d\
+		]\
+	]\n\n",
+		nodo, 
+		10*xcoord[nodo], 
+		10*ycoord[nodo],
+		20,
+		20,
+		shape_nodos[nodo],
+		color_nodos[nodo], 
+		nodo,
+		10 > (archivo_grafico);
+}
+
+
+for {(i,j) in arcos}
+{
+	if x[i,j] >= 0.9 then
+	{
+			printf "	edge\n\t[\
+		source	%d\
+		target	%d\
+		graphics\
+		[\
+			fill	\x22%s\x22\
+			targetArrow	\x22standard\x22\
+		]\
+	]\n\n",
+			i, 
+			j,
+			color_nodos[i] > (archivo_grafico);
+	}
+}
+	
+close archivo_grafico;
+
