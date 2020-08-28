@@ -1,6 +1,6 @@
 reset;
 option solver gurobi; 
-option gurobi_options 'outlev 1 timelim 100';
+option gurobi_options 'outlev 1 timelim 300';
 
 # option solver cplex;
 # option cplex_options 'mipdisplay=5';
@@ -8,12 +8,12 @@ option gurobi_options 'outlev 1 timelim 100';
 model mmodel.mod;
 data data/data.dat;
 data data/color.dat;
-expand > "model/model.lp";
+data data/initial_sol.dat;
+expand > model/model.lp;
 
 solve;
 
 display {(i,j) in arcos, k in K: x[i,j,k]};
-
 
 param shape_nodos {nodos} symbolic default "ellipse";
 param color_nodos {nodos} symbolic default "#777777";

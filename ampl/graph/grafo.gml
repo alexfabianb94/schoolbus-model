@@ -479,33 +479,11 @@ graph
 
 	edge
 	[
-		source	0
-		target	14
-		graphics
-		[
-			fill	"#ff0000"
-			targetArrow	"standard"
-		]
-	]
-
-	edge
-	[
-		source	0
-		target	19
-		graphics
-		[
-			fill	"#00ff00"
-			targetArrow	"standard"
-		]
-	]
-
-	edge
-	[
 		source	1
 		target	8
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -516,7 +494,7 @@ graph
 		target	20
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -527,7 +505,7 @@ graph
 		target	22
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -538,7 +516,7 @@ graph
 		target	17
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -549,7 +527,7 @@ graph
 		target	23
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -560,7 +538,7 @@ graph
 		target	21
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -571,7 +549,7 @@ graph
 		target	6
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -582,7 +560,7 @@ graph
 		target	7
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -593,7 +571,7 @@ graph
 		target	16
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -604,7 +582,7 @@ graph
 		target	9
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -615,7 +593,7 @@ graph
 		target	2
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -626,7 +604,7 @@ graph
 		target	5
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -637,7 +615,7 @@ graph
 		target	18
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -648,7 +626,7 @@ graph
 		target	21
 		graphics
 		[
-			fill	"#ff0000"
+			fill	"#00ff00"
 			targetArrow	"standard"
 		]
 	]
@@ -659,7 +637,7 @@ graph
 		target	10
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -670,7 +648,7 @@ graph
 		target	11
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -681,7 +659,7 @@ graph
 		target	15
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -692,7 +670,7 @@ graph
 		target	4
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -703,7 +681,7 @@ graph
 		target	13
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -714,7 +692,7 @@ graph
 		target	3
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
@@ -723,17 +701,6 @@ graph
 	[
 		source	21
 		target	12
-		graphics
-		[
-			fill	"#00ff00"
-			targetArrow	"standard"
-		]
-	]
-
-	edge
-	[
-		source	21
-		target	24
 		graphics
 		[
 			fill	"#ff0000"
@@ -747,6 +714,39 @@ graph
 		target	1
 		graphics
 		[
+			fill	"#ff0000"
+			targetArrow	"standard"
+		]
+	]
+
+	edge
+	[
+		source	0
+		target	14
+		graphics
+		[
+			fill	"#00ff00"
+			targetArrow	"standard"
+		]
+	]
+
+	edge
+	[
+		source	0
+		target	19
+		graphics
+		[
+			fill	"#ff0000"
+			targetArrow	"standard"
+		]
+	]
+
+	edge
+	[
+		source	21
+		target	24
+		graphics
+		[
 			fill	"#00ff00"
 			targetArrow	"standard"
 		]
@@ -758,7 +758,7 @@ graph
 		target	24
 		graphics
 		[
-			fill	"#00ff00"
+			fill	"#ff0000"
 			targetArrow	"standard"
 		]
 	]
