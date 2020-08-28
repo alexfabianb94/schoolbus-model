@@ -13,8 +13,8 @@ param depo := 0;
 param nk1 := NumCole + NumUsua + 1 ;
 
 param xcoord{nodos};
-param ycoord{nodos};
 param color{E} symbolic;
+param ycoord{nodos};
 
 param P {nodos};
 param D {nodos};
@@ -32,9 +32,9 @@ var r {nodos} >= 0;
 
 #minimize z: sum{i in E} t[i];
 #maximize z: t[0]+0.01*sum{i in E} t[i];
-maximize z: sum{i in E union U} t[i];
+#maximize z: sum{i in E union U} t[i];
 #maximize z: t[0];
-#minimize z: sum{i in N, j in N: (i,j) in arcos} (T[i,j]+S[j])*x[i,j];
+minimize z: sum{i in N, j in N: (i,j) in arcos} (T[i,j]+S[j])*x[i,j];
 #minimize z: sum{i in N, j in N: (i,j) in arcos} (T[i,j]+S[j])*x[i,j] -t[0];
 #minimize z: sum{i in U} (t[P[i]]-t[i]);
 

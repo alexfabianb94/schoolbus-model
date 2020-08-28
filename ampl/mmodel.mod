@@ -12,7 +12,7 @@ set N := U union E;
 param depo := 0;
 param nk1 := NumCole + NumUsua + 1 ;
 
-set arcos := {i in N, j in N: i != j} union {i in {depo}, j in U} union {i in E, j in {nk1}};
+set arcos := {i in N, j in N: i != j} union {i in {depo}, j in U} union {i in E, j in {nk1}} union {i in {depo}, j in {nk1}};
 #set arcos := {i in nodos, j in nodos: i != j};
 
 param xcoord{nodos};
@@ -46,17 +46,17 @@ minimize z: sum{i in N, j in N, k in K: (i,j) in arcos} (T[i,j]+S[j])*x[i,j,k];
 #minimize z: sum{i in U} (t[P[i]]-t[i]);
 
 s.t.
-llegada {k in K}: sum {j in U} x[depo,j,k] = 1;
+llegada {k in K}: sum {j in U union {nk1}} x[depo,j,k] = 1;
 salida  {j in U}: sum {i in {depo} union N, k in K: (i,j) in arcos} x[i,j,k] = 1;
 
 balance {j in N, k in K}: sum {i in {depo} union N: (i,j) in arcos} x[i,j,k] = sum {h in {nk1} union N: (j,h) in arcos} x[j,h,k];
 
 Rest3  {j in E, k in K}: sum {i in N: (i,j) in arcos} x[i,j,k] = y[j,k];
-Rest4 {k in K}: sum {i in E} x[i,nk1,k] = 1;
+Rest4 {k in K}: sum {i in E union {depo}} x[i,nk1,k] = 1;
 #Rest5 {i in U}: sum {j in N, k in K: (i,j) in arcos} x[i,j,k] = 1;
 #Rest6 {i in E, k in K}: sum {j in N union {nk1}: (i,j) in arcos} x[i,j,k] = y[i,k];
 
-MTZ1{i in N, j in N union {nk1}, k in K: (i,j) in arcos}: t[j,k]>= t[i,k]+(T[i,j]+S[j])*x[i,j,k]+ M*(x[i,j,k]-1); 
+MTZ1{i in N, j in N, k in K: (i,j) in arcos}: t[j,k]>= t[i,k]+(T[i,j]+S[j])*x[i,j,k]+ M*(x[i,j,k]-1); 
 MTZ10 {j in U, k in K}: t[j,k] >= t[depo,k] + M*(x[depo,j,k]-1);
 
 MTZ2{i in U, k in K}: t[i,k]<=t[P[i],k];
